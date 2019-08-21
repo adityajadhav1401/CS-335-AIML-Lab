@@ -1,0 +1,66 @@
+Name: Aditya Jadhav
+Roll number: 160050010
+========================================
+
+
+================
+     TASK 2
+================
+
+
+1. Run your code on datasets/garden.csv, with different values of k. Looking at the performance plots, does the SSE of k-means algorithm ever increase as the iterations are made? (1 mark)
+Answer: No the SSE never increases in the k-means algorithm. In fact it can be mathematically proven that it will never increase. The decrease happens at two points, one is when we change the label of the points according to the centroid closest to it. This means that the closest centroid distance for every point that get relabelled has decreased, hence overall SSE has to decrease. Now the second step is that we get new means by making them the centroid of the current clusters. We know that the sum of squared distance is minimum from the mean (centroid), so again the SSE will decrease. And this process repeats.
+
+3. Look at the files 3lines.png and mouse.png. Manually draw cluster boundaries around the 3 clusters visible in each file (no need to submit the hand drawn clusters). Test the k-means algorithm on the datasets datasets/3lines.csv and datasets/mouse.csv. How does the algorithm’s clustering compare with the clustering you would do by hand? Why do you think this happens? (1 mark)
+Answer: For 3lines dataset, I intuitively mark points in each line together in a cluster so as to get 3 oblong clusters. The algorithm on the other hand gave a very different answer. Ideally it should be possible to separate if the cluster centroids are in the middle of each of the three lines since then the perpendicular bisectors would mark the separating region. But this is not what we are converging to in this case, probably because the SSE of such a situation is higher. We can also see that the centroid are close in this case, which is what we try to avoid in case of kmeans++ so this has a higher SSE. The SSE is higher because the ends of the lines are quite far from the middle and those distances add up. Since we're taking euclidean distances it is preferable that the points are in a circular space around the centroids so that most of the points in its cluster are as close to the centroid as possible.
+
+For mouse dataset, I intuitively put the face in one cluster and each ear in one cluster. Again the algorithm doesn't match it, even though all these 3 clusters are circular. This time we see that some part of the face goes into the ear clusters. This happens because the circular region occupied by the mouse's face is large, and the ears are present close to the boundary of the face. Given the geometry of the face, the centroid for the face cluster would be somewhere close to the center of the face. Similarly for the ears. Now the points on the face near the ears are closer to the centroid of the ear than the centroid of the face due to the large radius of the face, this leads to the points getting classified with the ears.
+
+
+
+
+================
+     TASK 3
+================
+
+1. For each dataset, with kmeansplusplus initialization algorithm, report “average SSE” and "average iterations". Explain the results. (2 mark)
+Answer: In all the cases both the number of iterations as well as the Average SSE is lower than forgy. This is because we chose better initialisations in case of kmeans++. In kmeans the initial centroid chosen are farther away from each other, thus we can intuitively see that there is more probability that every point will find atleast one centroid close to it, i.e. for most of the points the minimum distance from the initial centroids will be less than that in case of forgy. Thus from the beginning the SSE is low. This leads to faster convergence. Also due to better initialisations there is a higher change of reaching to a better local minima. Forgy would get converged to not so good local minimas thus giving high SSE on convergence. 
+
+Dataset     |  Initialization | Average SSE  	| Average Iterations
+==================================================================
+   100.csv  |        forgy    |  8472.63311469	|		2.43
+   100.csv  |        kmeans++ |	 8472.63311469	|		2.0
+  1000.csv  |        forgy    |	 21337462.2968	|		3.28
+  1000.csv  |        kmeans++ |  19887301.0042 	|		3.16
+ 10000.csv  |        forgy    |  168842238.612	|		21.1
+ 10000.csv  |        kmeans++ |  22323178.8625  |		7.5
+
+
+================
+  	 TASK 4
+================
+
+1. Can you observe from the visualization that k-medians algorithm is more robust to outliers as compared to k-means? Why do you think this happens? (1.5 marks)
+Answer: Yes, we can visually observe that k-medians is more roubst to outliers as compared to k-means. This can be seen by the quality of clusters each algorithm makes. K-means in all the  three cases (outliers3 | k = 3, outliers4 | k = 4, outliers5 | k = 5) classified the outlier points into a single class and rest of the points into remaining classes (2, 3, 4 respectively). K-medians always picks up the central (median) value (from the given classification) as the new centroid. If there are sufficiently many inliers points in our current cluster i.e. more than  the number of outliers then, K-medians will always pick up an inlier point as the new cenroid. Hence in K-medians we will get a good quality of clustering whereas in K-means quality of  clustering is bad. 
+
+Let us consider file "outliers3.csv". Here when using K-means the green points firstly gets initialized close to the inlier points. After that in each iteration it can be seen that the point keeps on moving farther away from the inlier points and then finally becomes the centroid of the outlier points only. (on using --outliers we cannot se the green region hence green cluster only has outlier points).
+This is not seen in case of K-medians. Even though the outliers are a part of green cluster, the centroid of the green cluster is vlose to the inlier points.
+
+================
+  	 TASK 8
+================
+
+1. What do you observe as we reduce the number of clusters (k)? Answer in reference to the quality of decompressed image. (0.5 mark)
+Answer: As we decrease the number of clusters the "patchyness" of the decompressed image increases. Here by patchyness I mean that we can see less color gradient in the decompressed image as compared to the orignal image. A region in backgroung which had multiple shades of green color is now seen to have just a single shade of green. This patchyness can be seen at multiple locations in the image such as the tongue of tiger or the regions in backgroung which have a bokeh effect. This is sometimes also reffered as "contours" or "steps" in the image.
+
+
+2. You can observe that for the small number of clusters, the degree of compression (original size/compressed size) is about the same as that of when we use larger number of clusters even though we need to store lesser number of colors. Can you tell why? How can we increase this ratio in case of smaller number of clusters? [1 mark]
+Answer: Yes, as shown below we can observe that the degree of compression almost remains same. This is because the file "compressed.pgm" which stores the index of the centroid of cluster has a fixed size. It uses the same 1 Byte to store the index irrespective of the number of clusters. Hence its size remains the same. The second file "centroid.csv" has much smaller size as compared to the "compressed.pgm". Hence even though on increasing the number of clusters the size of this file increases linearly, for the total size of the compressed image,  size of "compressed.pgm" dominates hence ratio remains almost same.
+
+To increase this ratio for smaller number of clusters, we can modify the pgm format. Lets say we have only 16 clusters. We can easily store the index of each centroid in "centroid.csv" by using 0.5 byte. This is because we only have to store numbers from {0-15}. This will decrease the size of "coompressed.pgm" by 0.5 and hence can increase the ratio.  
+
+Number of  Clusters |  Size of compressed.pgm 	| Size of centroids.csv 	|	Ratio (original size/compressed size)
+========================================================================================================================
+		16			|		  83.00 KB		  	|			667 B			|			248.8/(83 + 0.65) = 2.97	
+		32			|		  83.00 KB		  	|			1.3 KB			|			248.8/(83 + 1.3) = 2.95
+		64			|		  83.00 KB		  	|			2.6 KB			|			248.8/(83 + 2.6) = 2.90

@@ -1,0 +1,75 @@
+TASK 2
+	1. Variation with number of training data points 'seen':
+
+	There's a general increase in the train and test accuracy with increase in the number of data points seen.
+	It can be observed that upto 1500 (approx) points seen, there is an increase. As we see more points after 1500
+	we see a repetitive pattern of crests (maxima) and troughs (minima); and not much improvement in the accuracy is seen. 
+	The accuracy oscillates but the not a substantial increase is not observed.
+
+	The reason for these observations are as follows - 
+
+	(a) Initially from 0-1500, we had no idea of the data so the accuracy was low. As we see data, we tune out weights if we 
+	misclassify the data. This results in some of the characteristics of that data getting incorporated in the weights. 
+	Now if we see a similar data point later, there's a higher chance that we will classify it correctly. Hence the weights 
+	get better and the accuracy increases substantially with the increase in number of points seen.
+
+	(b) After 1500 we saw the repetitive pattern of increase and decrease in accuracy. There could be multiple reasons 
+	for this. One reason for decrease can be that the points we saw earlier had a lot of data points which 
+	corresponded to the same label and since our weights got shifted towards classifying them correctly, our model performed badly 
+	on the validation dataset which had all types of points. As the weight for this label was being improved, the weights 
+	for other labels were also changing, which caused those other label points to get misclassified. In some sense we overfit 
+	for that label and hence the model did not generalise well. Another reason can be that there have been some outliers which 
+	skewed the weights and caused bad performance. The reason for increase remains the same as mentioned in point (a).
+
+
+	2. Variation with training set size in each iteration:
+
+	There's a general increase in the test accuracy with increase in the training set size.
+	This is because with a training set of a higher size there is a better chance that we will see more variations 
+	in the kind of data with the same label, so our wights get tuned better. We also see a dip between 600 and 
+	800 points. This might be occuring because the datapoints we saw between 600 and 800 had a lot of data points 
+	which corresponded to the same label and since our weights got shifted towards classifying them correctly, our model performed 
+	badly on the validation dataset which had all types of points. As the weight for this label was being improved, the weights 
+	for other labels were also changing, which caused those other label points to get misclassified. In some sense we overfit 
+	for that label and hence the model did not generalise well. 
+
+	There's a general decrease in the training accuracy with increase in the training set size.
+	This is because with a training set of higher size we get to see more variations in the kind of data. Due to this
+	the weights get tuned to incorporate these variances. While doing this incorporation it might end up misclassifing some points. 
+	Hence when we try to check accuracy on the same set (training data), the accuracy decreases with the increase in training size.
+
+		Q1. There is no training data and we need to specify how classifier will make predicitions:
+
+		In this case, since we have not seen any datapoint the classifier will make predictions based on the initial vector value 
+		of weights which was manually specified in the beginning. Hence the accuracy (in some manner) depends upon the initial value of weights.
+		On this dataset, if we assume that the initial value of weights (vector) coresponds to all zeros then -
+		- 	In 1vr algorithm, the score for every class will be 0 hence it will classify any point to the first class (assuming in case of equality
+			the max score returns the label of first maximum value).
+		- 	In 1v1 algorithm, the votes for every class will be equal and hence it will classify any point to the forst class (same assumption as above).
+		Hence if the points are equally distributed into each class then the expected accuracy will be 1/K = 1/10 which is 10%.
+
+TASK 3
+	1. Comparing the performances of perceptron1vr and perceptron1v1:
+
+	python dataClassifier.py -c 1vr -t 800 -s 8000  	--->  5706 correct out of 8000 (71.3%)
+	python dataClassifier.py -c 1v1 -t 800 -s 8000  	--->  5562 correct out of 8000 (69.5%) - Updates made only when guess is wrong
+	python dataClassifier.py -c 1v1 -t 800 -s 8000  	--->  5724 correct out of 8000 (71.5%) - Updates made irrespective of guess
+
+	python dataClassifier.py -c 1vr -t 20000 -s 80000 	--->  15228 correct out of 20000 (76.1%)
+	python dataClassifier.py -c 1v1 -t 20000 -s 80000	--->  15279 correct out of 20000 (76.4%) - Updates made only when guess is wrong
+	python dataClassifier.py -c 1v1 -t 20000 -s 80000	--->  15322 correct out of 20000 (76.6%) - Updates made irrespective of guess
+
+	(a) We can see that when the training data is low, the performance of 1vr is better (or almost same) to that of 1v1.
+	(b) We can see that when the training data is large, the performance of 1v1 get substantially better than that of 1vr.
+
+	When the training data is less, 1v1 algorithms performance suffers. This is because it has larger number of weights to be
+	tuned and less information (training data) to tune that weights. Hence it ends up with a poor performance in case of low
+	training data points. 1vr on the other hand has less number of weights which need to be tuned and hence can perform appreciably
+	well even with low data points. 
+
+	When the size of training data increases, 1v1 gets sufficient information to tune all the weights correctly and hence gives better 
+	classification than that of 1vr. The overall accuracy of 1vr also increases but the results are not as good as that of 1v1.
+	Hence we can conclude that on large datasets 1v1 has a better performance than 1vr.   
+
+
+

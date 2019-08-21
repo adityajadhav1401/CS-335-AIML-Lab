@@ -1,0 +1,68 @@
+Task 2.1 (XOR Dataset)
+	Overview:
+		In this task I tried a simple fully connected network. I used a single hidden layer.
+		With 3 nodes in the hidden layer I achieved a validation accuracy of 85% (approx).
+		Hence to achieve a larger accuracy, I increased the nodes to 4 and finally got 98.4% (seed 1).   
+
+	Hyperparameters: 
+	 	Learning Rate 		= 0.1 
+	 	Hidden Layers 		= 1 (4 nodes)  
+	 	Batch Size			= 100 
+	 	Number of Epochs  	= 30
+
+	Topology:
+	 	nn1 = nn.NeuralNetwork(len(YTrain[0]), 0.1, 100, 30)
+		nn1.addLayer(FullyConnectedLayer(2,4))
+		nn1.addLayer(FullyConnectedLayer(4,2))
+
+Task 2.2 (SemiCircle Dataset)
+	Overview:
+		In this task I tried a simple fully connected network. I used a single hidden layer.
+		With 2 nodes in the hidden layer I achieved a validation accuracy of 97.1% (seed 1).   
+
+	Hyperparameters: 
+	 	Learning Rate 		= 0.1 
+	 	Hidden Layers 		= 1 (2 nodes)  
+	 	Batch Size			= 100 
+	 	Number of Epochs  	= 30
+
+	Topology:
+	 	nn1 = nn.NeuralNetwork(len(YTrain[0]), 0.1, 10, 5)
+		nn1.addLayer(FullyConnectedLayer(2,2))
+		nn1.addLayer(FullyConnectedLayer(2,2))	 
+
+Task 2.3 (MNIST)
+	Overview:
+		In this task I tried a simple fully connected network. I used a single hidden layer.
+		With 20 nodes in the hidden layer I achieved a validation accuracy of 93.32% (seed 1). 	  
+
+	Hyperparameters: 
+	 	Learning Rate 		= 0.1 
+	 	Hidden Layers 		= 1 (20 nodes)  
+	 	Batch Size			= 100 
+	 	Number of Epochs  	= 30
+
+	Topology:
+	 	nn1 = nn.NeuralNetwork(len(YTrain[0]), 0.1, 10, 5)
+		nn1.addLayer(FullyConnectedLayer(784,10))
+
+Task 2.4 (CIFAR)
+	Overview:
+		In this tried to play around with multiple networks, the most simple network I tried was
+		just a single fully connected hidden layer. I got an accuracy of 30% (approx) in this case.
+		To pass this test I tried multiple networks but then I finally used the one mentioned in,
+		test_feedforward.py (task 4). It is mentioned below. It gave me an accuracy of 48.69% on the autograder. 	  
+
+	Hyperparameters: 
+	 	Learning Rate 		= 0.1 
+	 	Hidden Layers 		= 4 (4608, 512, 100 nodes)  
+	 	Batch Size			= 100
+	 	Number of Epochs  	= 30
+
+	Topology:
+	 	nn1 = nn.NeuralNetwork(10, 0.1, 10, 50)
+		nn1.addLayer(ConvolutionLayer([3,32,32], [10,10], 32, 2))
+		nn1.addLayer(AvgPoolingLayer([32,12,12], [3,3], 3))
+		nn1.addLayer(FlattenLayer())
+		nn1.addLayer(FullyConnectedLayer(512,100))
+		nn1.addLayer(FullyConnectedLayer(100,10))

@@ -1,0 +1,58 @@
+Bagging
+	Observation :	We observe that as the number of classifiers increase, the overall accuracy increases.
+					Also, the validation and test accuracy seem to remain almost same after 5 classifiers.
+					It seems as if the validation and test accuracy saturates after 5 classifiers. 
+
+					Below is the accuracy achieved at 20 classifiers 
+				 	Training Accuracy 	- 91% (approx)
+				 	Validation accuracy - 78% (approx)
+				 	Test Accuracy 		- 76% (approx)
+
+	Nature  	: 	The nature of the plot is increasing (with increasing number of classifiers). 
+					We can see that initially there is a substantial increase in the in accuracy (all) which can 
+					be seen to almost saturate (the rate of increase is less) after 20 classifiers. Theoretically after 
+					substantial classifiers an ensemble will eventually archieve training accuracy of 100% on the dataset.  
+
+Boosting
+	Observation :	We observe that as the number of classifiers increase, the overall accuracy increases.
+					The training accuracy has reached 100% and the validation and test accuracy remain almost the same (around 75%).
+					It seems as if the validation and test accuracy remain almost same right from the beginning (75% --> 76%) 
+					(Keeping the ratio Sample Data / Training Data = 1.5)
+
+					Below is the accuracy achieved at 20 classifiers 
+				 	Training Accuracy 	- 100% (approx)
+				 	Validation accuracy - 76% (approx)
+				 	Test Accuracy 		- 76% (approx)
+
+	Nature  	: 	The nature of the plot is increasing (with increasing number of classifiers). 
+					We can see that initially there is a substantial increase in the in training accuracy.  
+					Theoretically after substantial classifiers an ensemble will eventually archieve training 
+					accuracy of 100% on the dataset. This can be seen in the graph. 
+
+
+Question 1 
+	The training accuracies can be seen to be very high (91% for bagging and 100% for boosting). From a comparative point of view, we can say that 
+	Boosting performs better on training data than Bagging. This is because boostin it will over-fit the training data by accounting for
+	every missclassified point in the training set. This is done by increasing the weight of the missclassified point so that the next model
+	account for that point correclty. This improves its performance on the training data. Theoretically, after substantial 
+	time the training accuracy for an ensemble will eventually reach 100%. However in the case of performance on test/validation there’s 
+	not an outright winner; it depends on the data, the simulation and the circumstances.
+
+	If the problem is that the single model gets a very low performance, Bagging will rarely get a better bias. However, Boosting could generate a 
+	combined model with lower errors as it optimises the advantages and reduces pitfalls of the single modelBy contrast, if the difficulty 
+	of the single model is over-fitting, then Bagging is the best option.
+
+Question 2 - An ensemble combining perceptrons with weighted majority cannot be represented as an equivalent single perceptron.
+	The above statement is true. Ensemble learining is generally used to train multiple models and then average (weighted or regular)
+	of the outputs of each model. This helps to improve the overall accuracy by incorporating flexibility in the functions they can represent. 
+	This flexibility can, in theory, enable them to account the training data more than a single model.
+
+	Let us consider the case when we have "+" inside a circle "-" outside it. Using a single perceptron (line) we will always get an accuracy
+	of around 50% on this data as each classification will be random. Let us say we use 4 such weak learners which form a square 
+	surrounding this circle. Each of this perceptron will pridict "+" correctly as a point inside the square (circle to be exact). 
+	Let us say this prediction has a value of 4K (4 votes) . If we similarly have a "-" point, the prediction value will be either 0 (2,2 votes) 
+	or 2K (1, 3 votes). This hence, we will output the sign of (prediction - 2.5K) as the output of ensemble. Using this we can expect a high 
+	accuracy on this dataset. Such output cannot be expected in case of a single perceptron. 
+
+	Hence we can conclude saying that a single perceptron is not equivalent to ensemble combining weighted majority. 
+

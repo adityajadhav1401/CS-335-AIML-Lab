@@ -1,0 +1,29 @@
+==============
+	TASK 3
+==============
+
+	path.png : We make the following obsevations   
+		=> 	The start state (yellow square) is not visible. This is because during the stoichastic run (starting from the start state) the agent must have crossed the start state once again before reaching the final state. Hence the yellow color square gets overwritten by the red coloured square. It might be also possible that agent has crossed it more than one times.
+
+		=>	We can visually see that the agent has actually diverted from the optimal (shortest) path multiple times. We observe that the agent has tried some random paths along its run due to the stoichasticity  that has been enforced because of the small value of p (= 0.2). Hence we see multiple occourances of the red lines extending in direction opposite to the goal.
+
+		=>	Finally, we see that even after the presence of stoichasticity in the action selection process, the agent has finally managed to reach the goal state. This has happened because efter sufficient iterations, the reward of goal state has propogated to large number of states and the decisions of agent have become more refined for each state. Also the likelihood of making random decisions at each state which drives the agent away from goal is very less. Hence finally the agent haults and reaches the goal state. Theoretically the agent might also get stuck in an infinite loop and never hault but the likelihood of this happening is very-very low
+
+	plot.png : We make the following obsevations 
+		=>	The nature of graph is decreasing with increasing p. This is expected as on increasing p we are reducing the stoichasticity of the problem which means agent can take correct decisions with a higher probability and hence reach goal state in lesser number of moves. Hence for p = 1 we get the most optimal path and least number of moves that the agent can ever make (given it follows value iteration).
+
+		=>	We observe that at p = 0.3 there is a sudden decrease in the number of actions for reaching the goal state. This seem to be an artifact of the problem. It might be related to the average number of valid actions that be have on each state as follows -
+
+			Let a denote the average number of valid actions on each state.
+			P(correct) = p + (1-p)/a
+			P(random)  = (1-p)/a * (a-1)
+
+			Now as we can see when p is low, lets say 0 then randomness overpowers correctness (P(correct) = 1/a, P(incorrect) = 1-1/a).
+			We can say that when p increases, lets sat it when it reaches p = 0.3, correctness suddenly overpowers randomness a bit and hence a sudden decrease is observed. 
+			P(correct 	> P(random))
+			p + (1-p)/a > (1-p)/a * (a-1)
+			p > (1 - 2/a) / (2 - 2/a)
+
+			Hence from here on a sudden improvement in number of moves is seen.
+
+		=> We observe that from p = 0.35 to p = 1.0, not much difference in the number of moves is seen. This might we due to similar reason as shown above that once the correctness overpowers randomness not much improvement occurs. Hence one can say the for sufficiently large p's the rate of decrease of number of actions approaches a low (close to zero) value.

@@ -1,0 +1,39 @@
+==============
+    TASK 3    			
+==============
+	Q. Can we implement informed search techniques like A star for this Problem? Answer with respect to both path cost and heuristic.
+	A. Yes, we can implement informed search techniques for solving sudoku. This is a link (https://www.scribd.com/document/62738995/Informed-Search-Sudoku) of paper which formulates such a strategy by suggesting cost and heuristic functions. 
+
+	In this problem since or objective is to reduce the number of possible values in each cell to 1, we can intutively see cost of transition from S->S' can be formulated as -
+		g(S,S') = #Length_of_values_in_all_cell(S') - #Length_of_values_in_all_cell(S)
+
+	Also one needs a consistant heuristic funtion which has to be an under estimate of the cost to goal. An intutive funtion can be formulated as -   
+		h(S) = #Number_of_cell_with_length_of_values_more_than_1(s)
+
+	It turns out that one can always use informed search techniques if one has enough domain knowledge about a problem so as to formulate the basic entities for search problem such as states, edge costs and heurisctic values for various states.
+
+
+==============
+    TASK 7			
+==============
+	Q. Why A* Algorithm? Possible Heuristic for Travelling Student Problem.
+	A. A* algorithm is a much more refined algorithm if path cost and heuristic are formulated well enough (usualy done by domain experts). Hence using A* reduces the time required to find the optimim state. One thing to note is that paths returned by A* (if heuristic is consistent) or by any other Shortest Path Problem Algorithm will be same optimum path.
+
+	As we have described in the task 6,the heuristic function of straight line distance between current state and goal state can be used. This is consistent as the straight line distance will always be <= cost_to_goal i.e. an underestimate of the cost_to_goal.   
+
+	Q. What would have been the number of nodes visited in case we used a simple Shortest Path Problem Algorithm like Dijikstra's?
+	A. As we solved in task 5, if we use a null heuristic then A* algorithm's execution becomes exactly similar to Dijikstra's Algorithm. In the priority queue we only have the path costs from start state in case of Dijikstra's whereas A* is much more refined due to the heuristic. Hence A* visits lesser nodes and finds the optimum path quicker than other Shortert Path Problem Algorithm like Dijikstra's.
+
+	We get the following results using Dijikstra's -
+		Number of nodes expanded for IIT: 80
+		Number of nodes expanded for Mumbai: 26743
+
+	We get the following results using A* -
+		Number of nodes expanded for IIT: 21
+		Number of nodes expanded for Mumbai: 13048
+
+	Q. Also in case the problem would have required you to reach multiple nodes what possible heuristic can you come up with for A*?
+	A. In case that we have multiple goal states (lets sat G1, G2 ... Gn) we can use the following heuristic -
+		h(S) = min{point2distance(S,G1), point2distance(S,G2), ... point2distance(S,Gn)}
+
+	As reaching any one of the goal state is fine for this problem, we use minimum straight line distance to any one out of the "n" goal states.

@@ -1,0 +1,70 @@
+==============
+	TASK 3	 
+==============
+	λ⁺ 	ridge regression : 12 (approx)
+	SSE ridge regression : 540434269002.0287
+
+	λ⁺ 	lasso regression : 342500 (approx)
+	SSE ridge regression : 535379268755.70465
+
+	To tune lambdas we first try multiple values of λ of a wide scale and then according to the minima observed in graph try finer search.
+	For ridge regression I searched as follows - 
+		• range(0,100,10)	: got minima somewhere between 10-20
+		• range(10,20,1) 	: got minima at around 12
+
+	For lasso regression I searched as follows -		
+		• range(300000,380000,20000)	: got minima somewhere between 340000-350000
+		• range(340000,350000,1000)		: got minima somewhere between 341000-343000
+		• range(341000,343000,500)		: got minima at around 342500
+
+
+==============
+	TASK 5	 
+==============
+
+	Q. 	Is there something unusual with the solution of Lasso compared to the Ridge? 
+	A.	Yes! We observe that multiple weights have 0.0 values in case of Lasso. This means that the weight matrix in case of Lasso is a sparse matrix. 
+		Such behaviour is not observed in case of Ridge regression, i.e. weight matrix in Ridge regression is not a sparse matrix.
+
+	Q.	Explain why such a thing would happen? 
+ 	A.	This behaviour is expected to happen in case of Lasso. Below is the explaination for this observation - 
+ 		
+ 		Loss function in Lasso = Σ(Yi - (Xi * W))² + λ| W | 
+
+ 		This function has a factor of | W | =  Σ | Wk |
+ 		This is what makes the function non differentiable. Hence we cannot use simple gradient descent on this loss function.
+
+ 		We use a modified gradient called coordinate gradient descent which does the following.
+ 		• Initialize weight vector w
+ 		• Repeat until converged/max_iterations :
+ 			◦ For every dimension of input: 
+ 			◦ Set Wk = w such that derivative of loss wrt Wk = 0
+
+ 		Derivative of Loss wrt Wk = -2 * Σ(Yi - (Xi * W)) Xik + λ sign(Wk)
+ 		Here we now consides three cases.
+ 		• Wk > 0 : sign(Wk) =  1
+ 		• Wk < 0 : sign(Wk) = -1
+ 		• Wk = 0 : sign(Wk) =  0
+ 		We assume each of the following conditions, get the closed form solutions and finally set Wk to that value which matches our assumption.
+
+ 		To get an intutive feeling of why this is correct, we can look at it in two ways -
+		1) 	Since in out loss function we have a factor of | W | which has gradients as {+1, -1} i.e a V shape, and minimum at 0; this pushes the updated 
+			value of Wk towards the minima of graph | W | which is at Wk = 0. Hence this factor contributes to the 0.0 values observed in the final weights.  
+
+		2) 	This was explained by sir in class, if we plot the contours of : Σ(Yi - (Xi * W))² and : λ| W |. We can see in figure provided for this question 
+			diamond plot is of Lasso regression objective function and the elliptical contour plot in the figure represents error region. For 2 dimensional case, 
+			if an optimal point falls in the corner point, it means that one of the feature's weight term is zero. The diamond shape in the middle indicates the 
+			constraint region. The optimal point is a point which is common point between ellipse and diamond as well as gives a minimum value for the above function. 
+			Due to the model of this problem, there is a high probability that optimum point falls in the corner point of diamond (Wk = 0). Hence in a way we can
+			say that Lasso helps for feature selection. 
+
+	Q. 	Is using lasso advantageous compared to ridge. How? 
+	A.	This purely depends upon the users requirement. The only difference between Lasso and Ridge regression is that the regularization term is in absolute value. 
+		But this difference has a huge impact on the trade-off we’ve discussed before. Lasso method overcomes the disadvantage of Ridge regression by not only punishing 
+		high values of the coefficients Wk but actually setting them to zero if they are not relevant. Therefore, you might end up with fewer features included in the model 
+		than you started with. This can be a huge advantage to a user if he/she is trying to select relevant features from the data.But if the user is not interested in 
+		this task and rather wants to penalize high values weights then its more advantageous to use Rigde regression. 
+
+ 
+
+	
